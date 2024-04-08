@@ -8,8 +8,8 @@ class ContentProcessor:
 
     async def process_content(self, content, task="summarize", model="gpt-3.5-turbo", max_tokens=100, temperature=0):
         actions = {
-            "summarize": f"Summarize this: {content}",
-            "expand": f"Expand on this content in detail: {content}",
+            "summarize": f"总结以下内容的所有要点: {content}",
+            "expand": f"根据你自己的认知，扩充下面的内容，以markdown格式输出。输出的内容越系统化越好，越详细越好！: {content}",
         }
         
         prompt = actions.get(task, content)  # Fallback to original content if task is not recognized

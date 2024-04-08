@@ -24,20 +24,20 @@ class Render:
             
         queue = [node]
         while queue:
-            node = queue.pop()
-            if node.level in target_levels and node.content is not None:
+            node = queue.pop(0)
+            if node.level in target_levels and len(node.content) > 0:
                 tasks.append(self._process_node(node))
             queue.extend(node.children)
             
         for first_done in asyncio.as_completed(tasks):
             await first_done
 
-    def render(self, output_path):
+    def render(self, output_path, target_levels=None):
         # 需要创建一个新的事件循环来异步处理节点
         loop = asyncio.new_event_loop()
         asyncio.set_event_loop(loop)
         # 进行异步操作
-        loop.run_until_complete(self.async_process_node(self.document.root, [3]))  # 假设我们只对level 3的节点进行处理
+        loop.run_until_complete(self.async_process_node(self.document.root, target_levels))  # 假设我们只对level 3的节点进行处理
         loop.close()
         with open(output_path, 'w', encoding='utf-8') as file:
             for child in self.document.root.children:

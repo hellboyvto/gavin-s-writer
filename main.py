@@ -16,7 +16,7 @@ def process_documents(doc_path, output_path, target_levels, max_concurrency):
         parser = Parser(doc)  # 这里初始化解析文档
         renderer = Render(doc, max_concurrency)
         
-        renderer.render(output_path)
+        renderer.render(output_path, target_levels)
         
         # 文档处理完成后，输出成功的日志信息
         logger.info(f"Document processing completed: {output_path}")
