@@ -11,7 +11,6 @@ def process_documents(doc_path, output_path, target_levels, max_concurrency):
     try:
         doc = Document(file_path=doc_path)
         parser = Parser(doc)
-        parser.parse()  # 注意这里不再需要传递文件路径参数
         #doc.print_tree(target_levels=target_levels)
         renderer = Render(doc, max_concurrency)
         renderer.render(output_path)

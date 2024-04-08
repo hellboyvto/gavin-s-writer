@@ -6,8 +6,9 @@ from document import Document
 class Parser:
     def __init__(self, document):
         self.document = document
+        self._parse()  # 初始化时自动调用_parse方法来解析文档
 
-    def parse(self):
+    def _parse(self):  # 将parse方法改为私有
         title_pattern = re.compile(r'^(#+)\s*(.*)')
         current_node = self.document.root
         with open(self.document.file_path, 'r', encoding='utf-8') as file:
@@ -28,3 +29,4 @@ class Parser:
                         current_node.content += '\n' + line
                     else:
                         current_node.content = line
+
