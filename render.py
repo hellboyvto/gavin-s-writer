@@ -1,17 +1,21 @@
 # render.py
 import asyncio
 from node import Node
+from content_processor import ContentProcessor
 
 class Render:
     def __init__(self, document, max_concurrency=1):
         self.document = document
-        self.semaphore = asyncio.Semaphore(max_concurrency)  # 控制并发数量
-    
+        self.semaphore = asyncio.Semaphore(max_concurrency)
+        # 使用新的 ContentProcessor 实例
+        self.content_processor = ContentProcessor()
+
     async def _process_node(self, node):
         async with self.semaphore:
             print(f"处理 {node.title} at level {node.level}")
-            await asyncio.sleep(3)  # 模拟IO操作
-            node.content = f"处理后的内容: {node.title}"
+            # 使用 content_processor 来生成摘要
+            result = await self.content_processor.process_content(node.content, task="expand", max_tokens=4000, temperature=0.7)
+            node.content = f"{result if result else '<生成失败>'}"
             
     async def async_process_node(self, node, target_levels=None):
         tasks = []
